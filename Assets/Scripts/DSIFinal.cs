@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Linq;
-using Unity.VisualScripting;
-using System.Threading;
-using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 namespace DSIFin
 {
     public class DSIFinal : MonoBehaviour
     {
-
+        bool Level2 = false;
+        bool Level3 = false;
+        VisualElement BotonCrear;
+        VisualElement contDer;
+        TextField name;
+        TextField surname ;
+        Individuo individuoSelect = null;
         private void OnEnable()
         {
             int Numero = 0;
@@ -38,17 +41,14 @@ namespace DSIFin
             VisualElement pestaña_3 = ventanas.Query("3");
             VisualElement Tesoro = rootve.Query("Cofre");
            
-            bool Level2 = false;
-            bool Level3 = false;
-            VisualElement BotonCrear = rootve.Q("Crear");
-            VisualElement contDer = rootve.Q("ContDer");
-            TextField name = rootve.Q<TextField>("Nombre");
-            TextField surname = rootve.Q<TextField>("Apellido");
-            Individuo* individuoSelect;
-            BotonCrear.RegisterCallBack<ClickEvent>();
-            name.RegisterCallBack<ChangeEvent<string>>();
-            surname.RegisterCallBack<ChangeEvent<string>>();
-            contDer.RegisterCallBack<ClickEvent>(SelecciónTarjeta);
+         
+           BotonCrear = rootve.Q("BotonCrear");
+           contDer = rootve.Q("Usar");
+           name = rootve.Q<TextField>("InputName");
+           surname = rootve.Q<TextField>("InputSurname");
+
+            BotonCrear.RegisterCallback<ClickEvent>(NuevaTarjeta); // Cambio de "RegisterCallBack" a "RegisterCallback"
+            contDer.RegisterCallback<ClickEvent>(SelecciónTarjeta);
 
 
             VisualElement buttonPrincipal = rootve.Query("BotonPrincipal");
@@ -71,6 +71,7 @@ namespace DSIFin
             VisualElement ColisionerAmarillo = rootve.Query("YellowCollision");
             VisualElement ColisionerVerde = rootve.Query("GreenCollision");
             VisualElement buttonNivel2 = rootve.Query("Bnivel1");
+            VisualElement Jugar = rootve.Query("BotonJugar");
 
             rootve.schedule.Execute(() =>
             {
@@ -130,6 +131,10 @@ namespace DSIFin
             List<VisualElement> list2 = cuad2.Children().ToList();
             VisualElement buttonTreasure = rootve.Query("Bnivel3");
             VisualElement Salir = rootve.Query("Salir");
+            VisualElement Salir1 = rootve.Query("Salir1");
+            VisualElement Salir2 = rootve.Query("Salir2");
+            VisualElement Salir3 = rootve.Query("Salir3");
+
             foreach (var elem in list2)
             {
                 elem.AddManipulator(new Rotator());
@@ -164,7 +169,8 @@ namespace DSIFin
             pestaña_2.RegisterCallback<MouseDownEvent>(evt => DisplayGreen(rootve));
             pestaña_3.RegisterCallback<MouseDownEvent>(evt => DisplayBlue(rootve));
             Tesoro.RegisterCallback<MouseDownEvent>(evt => { Tesoro.AddToClassList("cofreabierto"); Tesoro.RemoveFromClassList("cofrecerrado"); });
-            buttonPrincipal.RegisterCallback<MouseDownEvent>(evt => DisplayNiveles(rootve));
+            buttonPrincipal.RegisterCallback<MouseDownEvent>(evt => DisplayPers(rootve));
+            Jugar.RegisterCallback<MouseDownEvent>(evt => DisplayNiveles(rootve));
             buttonLevel1.RegisterCallback<MouseDownEvent>(evt => DisplayLevel1(rootve));
             buttonLevel2.RegisterCallback<MouseDownEvent>(evt => DisplayLevel2(rootve));
             buttonLevel3.RegisterCallback<MouseDownEvent>(evt => DisplayLevel3(rootve));
@@ -172,15 +178,25 @@ namespace DSIFin
             buttonNivel3.RegisterCallback<MouseDownEvent>(evt => DisplayLevel3(rootve));
             buttonTreasure.RegisterCallback<MouseDownEvent>(evt => DisplayTreasure(rootve));
             Salir.RegisterCallback<MouseDownEvent>(evt => Salida(rootve));
+            Salir1.RegisterCallback<MouseDownEvent>(evt => Salida(rootve));
+            Salir2.RegisterCallback<MouseDownEvent>(evt => Salida(rootve));
+            Salir3.RegisterCallback<MouseDownEvent>(evt => Salida(rootve));
 
 
         }
         void DisplayNiveles(VisualElement rootve)
         {
-            VisualElement principal = rootve.Query("MenuPrincipal");
+            VisualElement principal = rootve.Query("Jugador");
             VisualElement niveles = rootve.Query("MenuNiveles");
             principal.style.display = DisplayStyle.None;
             niveles.style.display = DisplayStyle.Flex;
+        }
+        void DisplayPers(VisualElement rootve)
+        {
+            VisualElement principal = rootve.Query("MenuPrincipal");
+            VisualElement Pers = rootve.Query("Jugador");
+            principal.style.display = DisplayStyle.None;
+            Pers.style.display = DisplayStyle.Flex;
         }
         void Salida(VisualElement rootve)
         {
@@ -227,6 +243,7 @@ namespace DSIFin
             blue.style.display = DisplayStyle.Flex;
             red.style.display = DisplayStyle.None;
             green.style.display = DisplayStyle.None;
+            Guardar();
 
         }
         void DisplayGreen(VisualElement rootve)
@@ -254,23 +271,25 @@ namespace DSIFin
             return rectA.Overlaps(rectB);
         }
 
-        void NuevaTarjeta(ClickEvent ev, VisualElement contDer,Individuo individuoSelect)
+        void NuevaTarjeta(ClickEvent ev)
         {
             VisualTreeAsset plantilla = Resources.Load<VisualTreeAsset>("Tarjeta");
-            VisualElement tarjetaPlantilla = plantilla.Instantiate;
+            VisualElement tarjetaPlantilla = plantilla.Instantiate();
             contDer.Add(tarjetaPlantilla);
             Individuo indi = new Individuo(name.value, surname.value);
             Tarjeta tarj = new Tarjeta(tarjetaPlantilla, indi);
             individuoSelect = indi;
         }
-        void SelecciónTarjeta(ClickEvent ev, Individuo individuoSelect, ref bool level2, ref bool level3)
+        void SelecciónTarjeta(ClickEvent ev)
         {
             VisualElement miTarjeta = ev.target as VisualElement;
             individuoSelect = miTarjeta.userData as Individuo;
-             level2 = miTarjeta.GetLevel2();
-            level2 = miTarjeta.GetLevel3();
-        }
 
+        }
+        void Guardar() 
+        {
+
+        }
 
     }
 }
