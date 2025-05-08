@@ -1,0 +1,86 @@
+.Nivel1 {
+    background-color: rgb(49, 1, 1);
+}
+
+.Nivel2 {
+    background-color: rgb(0, 66, 10);
+}
+
+.Nivel3 {
+    background-color: rgb(23, 5, 57);
+    display: none;
+}
+
+.cuadradoLevel1 {
+    background-color: rgb(0, 0, 0);
+    width: 70px;
+    height: 70px;
+}
+
+.cuadradogrande {
+    background-color: rgb(0, 0, 0);
+    width: 240px;
+    height: 240px;
+    flex-direction: row;
+    flex-wrap: wrap-reverse;
+}
+
+.cuadpeque {
+    border-left-color: rgb(101, 0, 0);
+    border-right-color: rgb(101, 0, 0);
+    border-top-color: rgb(101, 0, 0);
+    border-bottom-color: rgb(101, 0, 0);
+    border-top-width: 6px;
+    border-right-width: 6px;
+    border-bottom-width: 6px;
+    border-left-width: 6px;
+    background-color: rgb(255, 0, 0);
+    width: 80px;
+    height: 80px;
+    align-self: auto;
+    justify-content: flex-start;
+}
+
+.collisionsquare {
+    width: 10px;
+    height: 10px;
+    align-self: center;
+    align-items: auto;
+    top: 30px;
+}
+
+.botonnivel {
+    position: absolute;
+}
+
+.piedrablanca {
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+}
+
+.selected {
+    border-left-color: rgb(0, 234, 255);
+    border-right-color: rgb(0, 234, 255);
+    border-top-color: rgb(0, 234, 255);
+    border-bottom-color: rgb(0, 234, 255);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    background-color: rgb(0, 255, 234);
+}
+
+.cofrecerrado {
+    background-image: url("project://database/Assets/Textures/cofrec.png?fileID=2800000&guid=47e4802488513bb4e9031bed8c3b306d&type=3#cofrec");
+    position: absolute;
+}
+
+.cofreabierto {
+    background-image: url("project://database/Assets/Textures/cofrea.png?fileID=2800000&guid=f7b466006baaea042913ac36651aa57d&type=3#cofrea");
+}
